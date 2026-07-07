@@ -1,0 +1,17 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+build/
+dist/
+*.egg-info/
+
+# Local generated media/transcript samples
+economics-of-everyday-things/
+economics-of-everyday-things-sample/
+bilibili-season-2621160-sample/
+downloads/
+failures.jsonl
