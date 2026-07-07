@@ -12,6 +12,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 from castscribe import downloader as castscribe_downloader
 from castscribe import pipeline, sources, subtitles, transcriber
+from castscribe.transcription.options import TranscriptionOptions
 
 
 class MediaToTextTests(unittest.TestCase):
@@ -210,6 +211,7 @@ world
             downloader.download_audio.return_value = []
             downloader.download_lowest_media.return_value = [media]
 
+            options = TranscriptionOptions(backend="google", language="en-US")
             with mock.patch.object(pipeline, "transcribe_media") as transcribe:
                 pipeline.process_source(
                     "https://example.com/v",
@@ -217,10 +219,12 @@ world
                     downloader,
                     "base",
                     keep_subtitles=True,
+                    transcription_options=options,
                 )
 
         downloader.download_lowest_media.assert_called_once()
         transcribe.assert_called_once()
+        self.assertEqual(transcribe.call_args.args[2], options)
 
     def test_apple_podcast_show_url_resolves_to_feed_url_before_download(self):
         payload = {

@@ -9,7 +9,9 @@ from typing import Callable
 from .downloader import YtDlpDownloader
 from .sources import local_source_path, resolve_remote_source
 from .subtitles import SUBTITLE_EXTENSIONS, subtitle_file_to_output
-from .transcriber import MEDIA_EXTENSIONS, transcribe_media
+from .transcriber import MEDIA_EXTENSIONS
+from .transcription import transcribe_media
+from .transcription.options import TranscriptionOptions
 
 
 def iter_local_inputs(path: Path) -> list[Path]:
@@ -41,7 +43,13 @@ def process_local_source(
     model: str,
     output_format: str,
     transcription_locale: str | None,
+    transcription_options: TranscriptionOptions | None = None,
 ) -> None:
+    options = transcription_options or TranscriptionOptions(
+        model=model,
+        output_format=output_format,
+        locale=transcription_locale,
+    )
     for local_file in iter_local_inputs(source_path):
         output_path = transcript_path_for(local_file, output_dir, output_format)
         if output_path.exists():
@@ -49,7 +57,7 @@ def process_local_source(
         if local_file.suffix.lower() in SUBTITLE_EXTENSIONS:
             subtitle_file_to_output(local_file, output_path, output_format)
         else:
-            transcribe_media(local_file, output_path, model, output_format, transcription_locale)
+            transcribe_media(local_file, output_path, options)
 
 
 def write_failure(output_dir: Path, source: str, stage: str, error: Exception) -> None:
@@ -67,11 +75,17 @@ def process_source(
     keep_subtitles: bool,
     output_format: str = "txt",
     transcription_locale: str | None = None,
+    transcription_options: TranscriptionOptions | None = None,
     url_opener: Callable[[str], bytes] | None = None,
 ) -> None:
+    options = transcription_options or TranscriptionOptions(
+        model=model,
+        output_format=output_format,
+        locale=transcription_locale,
+    )
     local_path = local_source_path(source)
     if local_path is not None:
-        process_local_source(local_path, output_dir, model, output_format, transcription_locale)
+        process_local_source(local_path, output_dir, model, output_format, transcription_locale, options)
         return
 
     source = resolve_remote_source(source, url_opener)
@@ -98,4 +112,4 @@ def process_source(
     for media in media_files:
         output_path = transcript_path_for(media, output_dir, output_format)
         if not output_path.exists():
-            transcribe_media(media, output_path, model, output_format, transcription_locale)
+            transcribe_media(media, output_path, options)

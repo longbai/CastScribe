@@ -29,6 +29,14 @@ classifiers = [
 
 [project.optional-dependencies]
 whisper = ["faster-whisper"]
+azure = ["azure-cognitiveservices-speech"]
+aws = ["boto3"]
+google = ["google-cloud-speech"]
+cloud = [
+    "azure-cognitiveservices-speech",
+    "boto3",
+    "google-cloud-speech",
+]
 
 [project.scripts]
 castscribe = "castscribe.cli:main"

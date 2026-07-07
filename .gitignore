@@ -30,3 +30,10 @@ cookies.txt
 *.key
 *.p12
 *.pfx
+*service-account*.json
+*credentials*.json
+azure*.json
+gcloud*.json
+aws*.json
+alibaba*.json
+tencent*.json

@@ -11,6 +11,7 @@ It first tries subtitles. If subtitles are unavailable, it downloads audio. If a
 - Or `yt-dlp` CLI available on `PATH`
 - macOS transcription: `yap`
 - non-macOS transcription: `python3 -m pip install faster-whisper`
+- optional cloud transcription SDKs: `castscribe[azure]`, `castscribe[aws]`, `castscribe[google]`, or `castscribe[cloud]`
 
 ## Install
 
@@ -89,6 +90,55 @@ Limit a channel, playlist, or podcast feed while testing:
 ```bash
 castscribe --playlist-items 1:2 --locale en_US --output transcripts "https://podcasts.apple.com/cn/podcast/the-economics-of-everyday-things/id1666678354"
 ```
+
+## Cloud Transcription
+
+CastScribe only calls a transcription backend when it cannot use downloaded subtitles. The default backend is still local:
+
+```bash
+castscribe --backend local ./audio.mp3
+```
+
+Install optional cloud SDKs:
+
+```bash
+python3 -m pip install -e '.[azure]'
+python3 -m pip install -e '.[aws]'
+python3 -m pip install -e '.[google]'
+python3 -m pip install -e '.[cloud]'
+```
+
+Azure Speech uses environment variables named `SPEECH_KEY` and `ENDPOINT`:
+
+```bash
+castscribe --backend azure --language en-US ./meeting.wav
+```
+
+AWS Transcribe uses the normal `boto3` credential chain. The first version expects the media file to already be available in S3:
+
+```bash
+castscribe \
+  --backend aws \
+  --cloud-region us-west-2 \
+  --cloud-uri s3://your-bucket/path/audio.mp3 \
+  --language en-US \
+  ./audio.mp3
+```
+
+Google Cloud Speech-to-Text uses Application Default Credentials:
+
+```bash
+castscribe --backend google --language en-US --min-speakers 2 --max-speakers 6 ./meeting.wav
+```
+
+Tencent Cloud and Alibaba Cloud are selectable but not implemented yet:
+
+```bash
+castscribe --backend tencent ./meeting.wav
+castscribe --backend aliyun ./meeting.wav
+```
+
+Cloud credentials must not be committed to the repository. Do not pass access keys on the command line; use the provider's environment variables or default credential chain.
 
 ## Behavior
 
