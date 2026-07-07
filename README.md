@@ -29,31 +29,12 @@ CastScribe first tries downloaded subtitles. These local transcription requireme
 
 ### macOS 26 or Later
 
-CastScribe uses Apple's `yap` command for the default local backend:
-
-```bash
-yap transcribe ./audio.mp3 --locale en_US --txt -o ./audio.txt
-```
-
-Check that `yap` is available:
-
-```bash
-yap transcribe --help
-```
-
-Install the language assets in System Settings before long runs:
+CastScribe uses Apple's `yap` command for the default local backend. Enable Dictation and install the language assets before long runs:
 
 1. Open System Settings.
 2. Go to Keyboard.
 3. Enable Dictation.
 4. Add the language you plan to use, for example English -> United States.
-
-Use the matching locale with CastScribe:
-
-```bash
-castscribe --locale en_US ./audio.mp3
-castscribe --locale zh_CN ./audio.mp3
-```
 
 `yap` does not provide speaker diarization. Use `--backend google`, `--backend azure`, or `--backend aws` when you need speaker labels.
 
@@ -63,12 +44,6 @@ Install the Whisper extra:
 
 ```bash
 python3 -m pip install -e '.[whisper]'
-```
-
-Then run the default local backend:
-
-```bash
-castscribe --backend local --model base ./audio.mp3
 ```
 
 The `--model` value is passed to `faster-whisper`; common choices are `tiny`, `base`, `small`, `medium`, and `large-v3`.
@@ -153,11 +128,7 @@ castscribe --playlist-items 1:2 --locale en_US --output transcripts "https://pod
 
 ## Cloud Transcription
 
-CastScribe only calls a transcription backend when it cannot use downloaded subtitles. The default backend is still local:
-
-```bash
-castscribe --backend local ./audio.mp3
-```
+CastScribe only calls a transcription backend when it cannot use downloaded subtitles. The default backend is local.
 
 Install optional cloud SDKs:
 
