@@ -15,3 +15,18 @@ economics-of-everyday-things-sample/
 bilibili-season-2621160-sample/
 downloads/
 failures.jsonl
+
+# Credentials and private browser/session exports
+.env
+.env.*
+!.env.example
+cookies.txt
+*.cookies.txt
+*cookies*.txt
+*cookie*.txt
+*token*
+*secret*
+*.pem
+*.key
+*.p12
+*.pfx
