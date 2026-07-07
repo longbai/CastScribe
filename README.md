@@ -29,7 +29,21 @@ CastScribe first tries downloaded subtitles. These local transcription requireme
 
 ### macOS 26 or Later
 
-CastScribe uses Apple's `yap` command for the default local backend. Enable Dictation and install the language assets before long runs:
+CastScribe uses [`yap`](https://github.com/finnvoor/yap) for the default local backend.
+
+Install `yap` with Homebrew:
+
+```bash
+brew install yap
+```
+
+Or install it with Mint:
+
+```bash
+mint install finnvoor/yap
+```
+
+Enable Dictation and install the language assets before long runs:
 
 1. Open System Settings.
 2. Go to Keyboard.
@@ -40,10 +54,18 @@ CastScribe uses Apple's `yap` command for the default local backend. Enable Dict
 
 ### Linux, Windows, or Non-yap Environments
 
-Install the Whisper extra:
+CastScribe uses [`faster-whisper`](https://github.com/SYSTRAN/faster-whisper) for the default local backend outside `yap` environments.
+
+Install it through CastScribe's Whisper extra:
 
 ```bash
 python3 -m pip install -e '.[whisper]'
+```
+
+Or install `faster-whisper` directly:
+
+```bash
+python3 -m pip install faster-whisper
 ```
 
 The `--model` value is passed to `faster-whisper`; common choices are `tiny`, `base`, `small`, `medium`, and `large-v3`.
