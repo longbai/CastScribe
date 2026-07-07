@@ -9,6 +9,9 @@ build/
 dist/
 *.egg-info/
 
+# Agent planning artifacts
+docs/superpowers/
+
 # Local generated media/transcript samples
 economics-of-everyday-things/
 economics-of-everyday-things-sample/
