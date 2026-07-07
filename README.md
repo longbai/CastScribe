@@ -4,14 +4,74 @@ CastScribe downloads subtitles or media from YouTube, Bilibili, Xiaoyuzhou, Appl
 
 It first tries subtitles. If subtitles are unavailable, it downloads audio. If audio-only download is unavailable, it downloads the lowest quality combined audio/video format and transcribes that.
 
+## Operating Systems
+
+CastScribe can download media and convert existing subtitles on any system that supports Python and `yt-dlp`.
+
+Local speech transcription depends on the operating system:
+
+- macOS 26 or later: local transcription uses Apple's `yap` command.
+- macOS before 26: use a cloud backend, or use `faster-whisper` by running on another supported Python environment.
+- Linux and Windows: local transcription uses `faster-whisper`.
+
+Cloud transcription backends are available on macOS, Linux, and Windows when the matching cloud SDK and credentials are configured.
+
 ## Requirements
 
 - Python 3.10+
 - `yt-dlp` Python package, installed automatically when installing this project
 - Or `yt-dlp` CLI available on `PATH`
-- macOS transcription: `yap`
-- non-macOS transcription: `python3 -m pip install faster-whisper`
 - optional cloud transcription SDKs: `castscribe[azure]`, `castscribe[aws]`, `castscribe[google]`, or `castscribe[cloud]`
+
+## Local Transcription Setup
+
+CastScribe first tries downloaded subtitles. These local transcription requirements apply only when no subtitle is available and CastScribe must transcribe audio.
+
+### macOS 26 or Later
+
+CastScribe uses Apple's `yap` command for the default local backend:
+
+```bash
+yap transcribe ./audio.mp3 --locale en_US --txt -o ./audio.txt
+```
+
+Check that `yap` is available:
+
+```bash
+yap transcribe --help
+```
+
+Install the language assets in System Settings before long runs:
+
+1. Open System Settings.
+2. Go to Keyboard.
+3. Enable Dictation.
+4. Add the language you plan to use, for example English -> United States.
+
+Use the matching locale with CastScribe:
+
+```bash
+castscribe --locale en_US ./audio.mp3
+castscribe --locale zh_CN ./audio.mp3
+```
+
+`yap` does not provide speaker diarization. Use `--backend google`, `--backend azure`, or `--backend aws` when you need speaker labels.
+
+### Linux, Windows, or Non-yap Environments
+
+Install the Whisper extra:
+
+```bash
+python3 -m pip install -e '.[whisper]'
+```
+
+Then run the default local backend:
+
+```bash
+castscribe --backend local --model base ./audio.mp3
+```
+
+The `--model` value is passed to `faster-whisper`; common choices are `tiny`, `base`, `small`, `medium`, and `large-v3`.
 
 ## Install
 
