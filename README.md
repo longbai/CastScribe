@@ -235,3 +235,23 @@ Install the built wheel locally:
 ```bash
 python3 -m pip install dist/castscribe-*.whl
 ```
+
+## Release
+
+Packages are published by GitHub Actions when a tag matching `v*` is pushed.
+
+Create and push a release tag:
+
+```bash
+git tag v0.1.0
+git push origin v0.1.0
+```
+
+PyPI publishing uses Trusted Publishing. Configure the PyPI project with:
+
+- Owner: `longbai`
+- Repository: `CastScribe`
+- Workflow: `publish.yml`
+- Environment: `pypi`
+
+No PyPI token is stored in the repository.
