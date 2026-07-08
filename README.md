@@ -72,7 +72,13 @@ The `--model` value is passed to `faster-whisper`; common choices are `tiny`, `b
 
 ## Install
 
-From this repository:
+Install from GitHub:
+
+```bash
+python3 -m pip install "castscribe @ git+https://github.com/longbai/CastScribe.git"
+```
+
+Or install from a local checkout:
 
 ```bash
 python3 -m pip install -e .
@@ -214,4 +220,18 @@ Run tests:
 
 ```bash
 python3 -m unittest discover -s tests
+```
+
+Build a wheel and source distribution:
+
+```bash
+python3 -m pip install -e '.[build]'
+python3 -m build
+python3 -m twine check dist/*
+```
+
+Install the built wheel locally:
+
+```bash
+python3 -m pip install dist/castscribe-*.whl
 ```
