@@ -238,14 +238,11 @@ python3 -m pip install dist/castscribe-*.whl
 
 ## Release
 
-Packages are published by GitHub Actions when a tag matching `v*` is pushed.
+Packages are published by GitHub Actions when a GitHub Release is published.
 
-Create and push a release tag:
+Create a GitHub Release in the browser with tag `v0.1.1`.
 
-```bash
-git tag v0.1.0
-git push origin v0.1.0
-```
+Do not push a separate release tag when publishing from the GitHub Release UI; the release event triggers the publish workflow.
 
 PyPI publishing uses Trusted Publishing. Configure the PyPI project with:
 
